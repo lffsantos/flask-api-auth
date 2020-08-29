@@ -1,0 +1,8 @@
+-r base.txt
+
+flake8==3.8.3
+pytest==6.0.1
+pytest-cov==2.10.1
+pytest-flask==1.0.0
+pytest-runner==5.2
+Faker==4.1.2
