@@ -9,7 +9,7 @@ from apps.users.models import User
 from apps.users.schemas import UserSchema, UserRegistrationSchema
 
 
-def save_new_user(payload):
+def register_user(payload):
     if payload is None:
         return resp_data_invalid('Users', [], msg=MSG_NO_DATA)
 
@@ -42,23 +42,6 @@ def save_new_user(payload):
     )
 
 
-def get_a_user(user_id):
-    user = User.query.filter_by(id=user_id).first_or_404()
-    users_schema = UserSchema()
-    return users_schema.dump(user)
-
-
-def update_user(data, user_id):
-    pass
-
-
 def save_changes(data):
     db.session.add(data)
     db.session.commit()
-
-
-def delete_user(user_id):
-    user = User.query.get_or_404(user_id)
-    db.session.delete(user)
-    db.session.commit()
-    return None, 204
