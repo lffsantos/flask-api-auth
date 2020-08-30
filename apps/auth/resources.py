@@ -1,3 +1,5 @@
+import logging
+
 from flask import request
 
 from flask_restful import Resource
@@ -14,11 +16,12 @@ from apps.responses import resp_ok, resp_data_invalid, resp_notallowed_user, res
 
 from .schemas import LoginSchema
 
+log = logging.getLogger(__name__)
+
 
 class AuthResource(Resource):
 
     def post(self, *args, **kwargs):
-
         payload = request.get_json() or None
 
         login_schema = LoginSchema()
@@ -36,9 +39,11 @@ class AuthResource(Resource):
 
         # if not instance of User return response error
         if not isinstance(user, User):
+            log.info('%s failed to log in, email not found', data.get('email'))
             return user
 
         if not user.is_active:
+            log.info('%s failed to log in, inactive user', user.email)
             return resp_notallowed_user('Auth')
 
         # trick for test pass
@@ -54,9 +59,10 @@ class AuthResource(Resource):
             }
 
             result = schema.dump(user)
-
+            log.info('%s logged in successfully', user.email)
             return resp_ok('Auth', MSG_TOKEN_CREATED, data=result, **extras)
 
+        log.info('%s failed to log in', user.email)
         return resp_authenticated_user('Auth')
 
 
