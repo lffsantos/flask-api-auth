@@ -1,5 +1,5 @@
 from marshmallow import Schema, EXCLUDE
-from marshmallow.fields import Email, Str, Boolean, DateTime
+from marshmallow.fields import Email, Str, Boolean
 
 from apps.messages import MSG_FIELD_REQUIRED
 
@@ -28,7 +28,3 @@ class UserSchema(Schema):
         required=True, error_messages={'required': MSG_FIELD_REQUIRED}
     )
     active = Boolean()
-    password = Str(
-        required=True, error_messages={'required': MSG_FIELD_REQUIRED}
-    )
-    email_confirmed_at = DateTime()

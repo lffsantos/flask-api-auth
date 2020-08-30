@@ -1,5 +1,6 @@
 from flask import jsonify
 
+from apps.messages import MSG_PERMISSION_DENIED, MSG_INVALID_CREDENTIALS
 from .messages import MSG_INVALID_DATA, MSG_DOES_NOT_EXIST, MSG_EXCEPTION
 from .messages import MSG_ALREADY_EXISTS
 
@@ -97,5 +98,36 @@ def resp_ok(resource, message, data=None, **extras):
     resp = jsonify(response)
 
     resp.status_code = 200
+
+    return resp
+
+
+def resp_notallowed_user(resource, msg=MSG_PERMISSION_DENIED):
+
+    if not isinstance(resource, str):
+        raise ValueError('Recurso precisa ser uma string')
+
+    resp = jsonify({
+        'status': 401,
+        'resource': resource,
+        'message': msg
+    })
+
+    resp.status_code = 401
+
+    return resp
+
+
+def resp_authenticated_user(resource, msg=MSG_INVALID_CREDENTIALS):
+    if not isinstance(resource, str):
+        raise ValueError('Recurso precisa ser uma string')
+
+    resp = jsonify({
+        'status': 401,
+        'resource': resource,
+        'message': msg
+    })
+
+    resp.status_code = 401
 
     return resp

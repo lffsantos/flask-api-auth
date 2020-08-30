@@ -16,7 +16,5 @@ class User(db.Model, UserMixin):
     email_confirmed_at = db.Column(db.DateTime())
     full_name = db.Column(db.String(255), nullable=False, server_default='')
 
-    # query = db.session.query_property()
-
     def __repr__(self):
         return '<User %r>' % self.email

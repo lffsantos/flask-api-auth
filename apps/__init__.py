@@ -6,6 +6,7 @@ from apps.database import db
 from config import config
 
 from .api import configure_api
+from apps.jwt import configure_jwt
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -21,13 +22,16 @@ def config_db(app):
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.init_app(app)
 
-    from apps.users import models
     db.create_all(app=app)
 
 
 def create_app(config_name):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
+
     config_db(app)
+
+    configure_jwt(app)
+
     configure_api(app)
     return app
